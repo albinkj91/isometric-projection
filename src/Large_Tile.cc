@@ -8,5 +8,5 @@ Large_Tile::Large_Tile(int const x, int const y, sf::Texture const& tex)
 void Large_Tile::set_pos(int const x, int const y)
 {
 	Tile::set_pos(x, y);
-	sprite.setPosition(x, y - 3 * 32 + 16);
+	sprite.setPosition(sf::Vector2f{static_cast<float>(x), static_cast<float>(y - 3 * 32 + 16)});
 }

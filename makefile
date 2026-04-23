@@ -51,3 +51,6 @@ clean:
 # 'make zap' also removes the executable and backup files.
 zap: clean
 	@ \rm -rf main *~
+
+run: main
+	./main

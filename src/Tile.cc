@@ -8,7 +8,7 @@ Tile::Tile(int const x, int const y, sf::Texture const& tex)
 void Tile::set_pos(int const x, int const y)
 {
 	pos = sf::Vector2i{x, y};
-	sprite.setPosition(x, y);
+	sprite.setPosition(sf::Vector2f{static_cast<float>(pos.x), static_cast<float>(pos.y)});
 }
 
 sf::Vector2i Tile::get_pos() const

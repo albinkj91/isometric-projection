@@ -7,7 +7,7 @@
 #include <memory>
 
 Scene::Scene(unsigned const w_width, unsigned const w_height)
-	:window{sf::VideoMode{w_width, w_height}, "TileX"}
+	:window{sf::VideoMode{sf::Vector2u{w_width, w_height}}, "TileX"}
 { }
 
 Grid Scene::initialize() const
@@ -64,35 +64,41 @@ void Scene::run()
 			current->set_pos(pos.x, pos.y - 7);
 			this->window.draw(current->get_sprite());
 
-			if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 			{
 				current->set_pos(pos.x, pos.y);
 				grid.at(tx, ty) = *current;
 			}
-			else if(sf::Mouse::isButtonPressed(sf::Mouse::Right))
+			else if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 			{
 				grid.at(tx, ty) = *types.at(0);
 				grid.at(tx, ty).set_pos(pos.x, pos.y);
 			}
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1))
 			keyboard_state = 1;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2))
 			keyboard_state = 2;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3))
 			keyboard_state = 3;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4))
 			keyboard_state = 4;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num5))
 			keyboard_state = 5;
 
-        sf::Event event;
-        while (this->window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                this->window.close();
-        }
+		while (const std::optional event = window.pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+			{
+				window.close();
+			}
+			else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+			{
+				if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
+					window.close();
+			}
+		}
       this->window.display();
     }
 }
